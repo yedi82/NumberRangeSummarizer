@@ -13,17 +13,14 @@ public class NumberRangeSummarizerImpl implements NumberRangeSummarizer {
         String[] numStrings = input.split(",");
 
         //Iterating through the splitted strings
-        while (numStrings.length > 0) {
-            //Parsing the string to integer
-            int num = Integer.parseInt(numStrings[0]);
+        for (String numStr : numStrings) {
+            //Parsing the string to an integer
+            int number = Integer.parseInt(numStr.trim());
             //Adding the integer to the list
-            nums.add(num);
-            //Removing the first element from the array
-            numStrings = Arrays.copyOfRange(numStrings, 1, numStrings.length);
+            nums.add(number);
         }
 
-        //Ordering the list, making use of the collections cla
-        //Numerical order sorting from (1,....)
+        //Ordering in Numerical using the collections class
         Collections.sort(nums);
 
         return nums;
