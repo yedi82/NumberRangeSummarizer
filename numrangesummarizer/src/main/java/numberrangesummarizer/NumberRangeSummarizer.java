@@ -23,4 +23,12 @@ public interface NumberRangeSummarizer {
     //get the summarized string
     String summarizeCollection(Collection<Integer> input);
 
+    public static void main(String[] args) {
+        NumberRangeSummarizer summarizer = new NumberRangeSummarizerImpl();
+        String input = "1,3,6,7,8,12,13,14,15,21,22,23,24,31";
+        Collection<Integer> collected = summarizer.collect(input);
+        String result = summarizer.summarizeCollection(collected);
+        System.out.println(result);  // Output: 1, 3, 6-8, 12-15, 21-24, 31
+    }
+
 }

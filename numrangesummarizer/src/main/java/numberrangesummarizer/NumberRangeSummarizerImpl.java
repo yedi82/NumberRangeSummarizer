@@ -27,77 +27,41 @@ public class NumberRangeSummarizerImpl implements NumberRangeSummarizer {
     }
 
     @Override
-
     public String summarizeCollection(Collection<Integer> input) {
-        if (!input.isEmpty()) {
-
-            //Creating a list to store the ranges
-            List<String> ranges = new ArrayList<>();
-            //Creating a list to store the numbers
-            List<Integer> numbers = new ArrayList<>(input);
-            //Creating a string to store the range
-            String range = "";
-            //Creating a string to store the result
-            String result = "";
-
-            //Iterating through the numbers
-            for (int i = 0; i < numbers.size(); i++) {
-                //Checking if the range is empty
-                if (range.isEmpty()) {
-                    //Adding the number to the range
-                    range += numbers.get(i);
-                }
-                //Checking if the range is not empty
-                if (!range.isEmpty()) {
-                    //Checking if the next number is sequential
-                    if (i + 1 < numbers.size()) {
-                        if (numbers.get(i + 1) - numbers.get(i) == 1) {
-                            //Checking if the range is not empty
-                            if (!range.contains("-")) {
-                                //Adding the hyphen to the range
-                                range += "-";
-                            }
-                        }
-                    } else {
-                        //Checking if the range is not empty
-                        if (range.contains("-")) {
-                            //Adding the number to the range
-                            range += numbers.get(i);
-                        }
-                    }
-                }
-                //Checking if the range is not empty
-                if (!range.isEmpty()) {
-                    //Adding the range to the ranges
-                    ranges.add(range);
-                    //Clearing the range
-                    range = "";
-                }
-            }
-
-            //Iterating through the ranges
-            for (int i = 0; i < ranges.size(); i++) {
-                //Checking if the range is not empty
-                if (!ranges.get(i).contains("-")) {
-                    //Adding the range to the result
-                    result += ranges.get(i);
-                } else {
-                    //Splitting the range by hyphen
-                    String[] rangeParts = ranges.get(i).split("-");
-                    //Adding the range to the result
-                    result += rangeParts[0] + "-" + rangeParts[1];
-                }
-                //Checking if the next range is not empty
-                if (i + 1 < ranges.size()) {
-                    //Adding the comma to the result
-                    result += ", ";
-                }
-            }
-
-            return result;
+        if (input.isEmpty()) {
+            return "";
         }
 
-        return "";
+        StringBuilder result = new StringBuilder();
+        List<Integer> sortedNumbers = new ArrayList<>(input);
+        int rangeStart = sortedNumbers.get(0);
+        int previous = rangeStart;
+
+        for (int i = 1; i < sortedNumbers.size(); i++) {
+            int current = sortedNumbers.get(i);
+
+            if (current != previous + 1) {
+                // Close current range and start a new one
+                if (rangeStart == previous) {
+                    result.append(rangeStart);
+                } else {
+                    result.append(rangeStart).append("-").append(previous);
+                }
+                result.append(", ");
+                rangeStart = current;
+            }
+
+            previous = current;
+        }
+
+        // Append the final range
+        if (rangeStart == previous) {
+            result.append(rangeStart);
+        } else {
+            result.append(rangeStart).append("-").append(previous);
+        }
+
+        return result.toString();
     }
 
 }
