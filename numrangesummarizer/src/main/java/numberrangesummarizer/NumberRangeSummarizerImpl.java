@@ -1,9 +1,26 @@
 package numberrangesummarizer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
+/**
+ * This class will implement the NumberRangeSummarizer interface to produce a
+ * comma delimited list of numbers, grouping the numbers into a range when they
+ * are sequential.
+ *
+ * Sample Input: "1,3,6,7,8,12,13,14,15,21,22,23,24,31 Result: "1, 3, 6-8,
+ * 12-15, 21-24, 31"
+ */
 public class NumberRangeSummarizerImpl implements NumberRangeSummarizer {
 
+    /**
+     * This method will collect the numbers from the input string
+     *
+     * @param input
+     * @return Collection<Integer>
+     */
     @Override
     public Collection<Integer> collect(String input) {
         //Creating an List which will contain/consists of all the numbers
@@ -14,54 +31,70 @@ public class NumberRangeSummarizerImpl implements NumberRangeSummarizer {
 
         //Iterating through the splitted strings
         for (String numStr : numStrings) {
-            //Parsing the string to an integer
+            //Parsing string to integer
             int number = Integer.parseInt(numStr.trim());
-            //Adding the integer to the list
+            //Adding to list
             nums.add(number);
         }
 
-        //Ordering in Numerical using the collections class
+        //Order Numerically
         Collections.sort(nums);
 
         return nums;
     }
 
+    /**
+     * This method will summarize the collection of numbers
+     *
+     * @param input
+     * @return String
+     */
     @Override
     public String summarizeCollection(Collection<Integer> input) {
-        if (input.isEmpty()) {
-            return "";
-        }
 
-        StringBuilder result = new StringBuilder();
-        List<Integer> sortedNumbers = new ArrayList<>(input);
-        int rangeStart = sortedNumbers.get(0);
-        int previous = rangeStart;
+        //Checking if the input is not empty
+        if (!input.isEmpty()) {
 
-        for (int i = 1; i < sortedNumbers.size(); i++) {
-            int current = sortedNumbers.get(i);
+            //Store the summarized numbers in StringBuilder 
+            StringBuilder sumNum = new StringBuilder();
 
-            if (current != previous + 1) {
-                // Close current range and start a new one
-                if (rangeStart == previous) {
-                    result.append(rangeStart);
-                } else {
-                    result.append(rangeStart).append("-").append(previous);
+            //List to store the sorted numbers
+            List<Integer> sortedNumbers = new ArrayList<>(input);
+
+            //Stores the start of the range
+            int rangeStart = sortedNumbers.get(0);
+
+            //stores the previous number
+            int previous = rangeStart;
+
+            for (int i = 1; i < sortedNumbers.size(); i++) {
+                int current = sortedNumbers.get(i);
+
+                if (current != previous + 1) {
+                    //Close current range and start a new one
+                    if (rangeStart == previous) {
+                        sumNum.append(rangeStart);
+                    } else {
+                        sumNum.append(rangeStart).append("-").append(previous);
+                    }
+                    sumNum.append(", ");
+                    rangeStart = current;
                 }
-                result.append(", ");
-                rangeStart = current;
+
+                previous = current;
             }
 
-            previous = current;
-        }
+            //Append the final range
+            if (rangeStart == previous) {
+                sumNum.append(rangeStart);
+            } else {
+                sumNum.append(rangeStart).append("-").append(previous);
+            }
 
-        // Append the final range
-        if (rangeStart == previous) {
-            result.append(rangeStart);
-        } else {
-            result.append(rangeStart).append("-").append(previous);
+            return sumNum.toString();
         }
+        return "";
 
-        return result.toString();
     }
 
 }
