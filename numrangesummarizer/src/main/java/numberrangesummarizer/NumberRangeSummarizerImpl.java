@@ -72,6 +72,10 @@ public class NumberRangeSummarizerImpl implements NumberRangeSummarizer {
 
                 if (current != previous + 1) {
                     //Close current range and start a new one
+                    /*If the rangeStart is equal to the previous number, 
+                    then append the rangeStart to the StringBuilder
+                    else append the rangeStart and the previous number to the StringBuilder
+                     */
                     if (rangeStart == previous) {
                         sumNum.append(rangeStart);
                     } else {
@@ -86,6 +90,10 @@ public class NumberRangeSummarizerImpl implements NumberRangeSummarizer {
 
             //Append the final range
             if (rangeStart == previous) {
+                /**
+                 * If the rangeStart is equal to the previous number, then
+                 * append the rangeStart
+                 */
                 sumNum.append(rangeStart);
             } else {
                 sumNum.append(rangeStart).append("-").append(previous);
